@@ -1,9 +1,21 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Coins, Flame, BookOpen, Target, Star, Shield, Award } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import EditProfileDialog from "@/components/EditProfileDialog";
+import ShareStatsDialog from "@/components/ShareStatsDialog";
 
 export default function Profile() {
+  const { t, language } = useLanguage();
+  const [profile, setProfile] = useState({
+    username: language === 'ar' ? 'المستخدم' : 'User',
+    description: language === 'ar' ? 'متحمس لتعلم اللغة العربية' : 'Arabic Learning Enthusiast',
+    country: language === 'ar' ? 'السعودية' : 'Saudi Arabia',
+    avatar: 'U'
+  });
+
   const stats = {
     totalCoins: 1247,
     currentStreak: 12,
@@ -14,27 +26,28 @@ export default function Profile() {
   };
 
   const badges = [
-    { name: "First Steps", icon: Star, earned: true },
-    { name: "Week Warrior", icon: Shield, earned: true },
-    { name: "Coin Collector", icon: Coins, earned: true },
-    { name: "Perfect Week", icon: Award, earned: false },
+    { name: language === 'ar' ? 'الخطوات الأولى' : "First Steps", icon: Star, earned: true },
+    { name: language === 'ar' ? 'محارب الأسبوع' : "Week Warrior", icon: Shield, earned: true },
+    { name: language === 'ar' ? 'جامع العملات' : "Coin Collector", icon: Coins, earned: true },
+    { name: language === 'ar' ? 'الأسبوع المثالي' : "Perfect Week", icon: Award, earned: false },
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8" dir={language === 'ar' ? 'rtl' : 'ltr'}>
       {/* Profile Header */}
       <Card className="flashcard">
         <CardContent className="pt-6">
           <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
             <Avatar className="w-24 h-24">
               <AvatarFallback className="text-2xl bg-primary text-primary-foreground">
-                U
+                {profile.username.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
             
             <div className="text-center md:text-left space-y-2 flex-1">
-              <h1 className="text-3xl font-bold">User</h1>
-              <p className="text-muted-foreground">Arabic Learning Enthusiast</p>
+              <h1 className="text-3xl font-bold">{profile.username}</h1>
+              <p className="text-muted-foreground">{profile.description}</p>
+              <p className="text-sm text-muted-foreground">{profile.country}</p>
               <div className="flex flex-wrap gap-2 justify-center md:justify-start">
                 <div className="coin-counter">
                   <Coins className="w-4 h-4 mr-1" />
@@ -47,9 +60,13 @@ export default function Profile() {
               </div>
             </div>
             
-            <div className="text-center">
-              <div className="text-3xl font-bold text-accent">Level {stats.level}</div>
+            <div className="text-center space-y-3">
+              <div className="text-3xl font-bold text-accent">{t('level')} {stats.level}</div>
               <p className="text-sm text-muted-foreground">{stats.xp} XP</p>
+              <div className="flex gap-2">
+                <EditProfileDialog profile={profile} onSave={setProfile} />
+                <ShareStatsDialog stats={stats} badges={badges} />
+              </div>
             </div>
           </div>
         </CardContent>
@@ -61,7 +78,7 @@ export default function Profile() {
           <div className="space-y-2">
             <BookOpen className="w-8 h-8 mx-auto text-primary" />
             <div className="text-2xl font-bold">{stats.totalCards}</div>
-            <p className="text-sm text-muted-foreground">Cards Studied</p>
+            <p className="text-sm text-muted-foreground">{t('cardsStudied')}</p>
           </div>
         </Card>
         
@@ -69,7 +86,7 @@ export default function Profile() {
           <div className="space-y-2">
             <Target className="w-8 h-8 mx-auto text-success" />
             <div className="text-2xl font-bold">{stats.accuracy}%</div>
-            <p className="text-sm text-muted-foreground">Accuracy</p>
+            <p className="text-sm text-muted-foreground">{t('accuracy')}</p>
           </div>
         </Card>
         
@@ -77,7 +94,7 @@ export default function Profile() {
           <div className="space-y-2">
             <Flame className="w-8 h-8 mx-auto text-streak-fire" />
             <div className="text-2xl font-bold">{stats.currentStreak}</div>
-            <p className="text-sm text-muted-foreground">Day Streak</p>
+            <p className="text-sm text-muted-foreground">{t('dayStreak')}</p>
           </div>
         </Card>
         
@@ -85,7 +102,7 @@ export default function Profile() {
           <div className="space-y-2">
             <Coins className="w-8 h-8 mx-auto text-coin-gold" />
             <div className="text-2xl font-bold">{stats.totalCoins}</div>
-            <p className="text-sm text-muted-foreground">Total Coins</p>
+            <p className="text-sm text-muted-foreground">{t('totalCoins')}</p>
           </div>
         </Card>
       </div>
@@ -93,7 +110,7 @@ export default function Profile() {
       {/* Badges */}
       <Card className="flashcard">
         <CardHeader>
-          <CardTitle>Achievement Badges</CardTitle>
+          <CardTitle>{t('achievementBadges')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

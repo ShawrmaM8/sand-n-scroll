@@ -62,8 +62,8 @@ export default function SRSSession() {
   };
 
   const handleAnswer = (difficulty: "easy" | "medium" | "hard") => {
-    // Award coins based on difficulty
-    const coinRewards = { easy: 5, medium: 10, hard: 15 };
+    // Award/deduct coins based on difficulty
+    const coinRewards = { easy: 5, medium: 1, hard: -10 };
     const earnedCoins = coinRewards[difficulty];
     
     setCoins(prev => prev + earnedCoins);
@@ -185,14 +185,14 @@ export default function SRSSession() {
                     className="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
                   >
                     <XCircle className="w-4 h-4 mr-2" />
-                    Difficult (15 coins)
+                    Difficult (-10 coins)
                   </Button>
                   <Button 
                     onClick={() => handleAnswer("medium")}
                     variant="outline"
                     className="border-accent text-accent hover:bg-accent hover:text-accent-foreground"
                   >
-                    Good (10 coins)
+                    Good (+1 coin)
                   </Button>
                   <Button 
                     onClick={() => handleAnswer("easy")}
@@ -200,7 +200,7 @@ export default function SRSSession() {
                     className="border-success text-success hover:bg-success hover:text-success-foreground"
                   >
                     <CheckCircle className="w-4 h-4 mr-2" />
-                    Easy (5 coins)
+                    Easy (+5 coins)
                   </Button>
                 </div>
               </div>

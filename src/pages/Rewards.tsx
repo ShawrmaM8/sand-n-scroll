@@ -1,22 +1,53 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Coins, Star, Shield, Lightbulb, Plus } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Rewards() {
   const rewards = [
-    { id: 1, name: "Golden Avatar", cost: 500, type: "avatar", icon: Star },
-    { id: 2, name: "Study Streak Shield", cost: 300, type: "badge", icon: Shield },
-    { id: 3, name: "Hint Pack (5x)", cost: 150, type: "hint", icon: Lightbulb },
-    { id: 4, name: "Extra Deck Slot", cost: 750, type: "slot", icon: Plus },
+    { 
+      id: 1, 
+      name: "Golden Avatar", 
+      cost: 500, 
+      type: "avatar", 
+      icon: Star,
+      description: "Stand out with a premium golden avatar frame that shows your dedication to learning."
+    },
+    { 
+      id: 2, 
+      name: "Study Streak Shield", 
+      cost: 300, 
+      type: "badge", 
+      icon: Shield,
+      description: "Protect your streak! Get 3 free streak freezes to maintain your progress."
+    },
+    { 
+      id: 3, 
+      name: "Hint Pack (5x)", 
+      cost: 150, 
+      type: "hint", 
+      icon: Lightbulb,
+      description: "Stuck on a word? Use hints to reveal part of the answer and keep learning."
+    },
+    { 
+      id: 4, 
+      name: "Extra Deck Slot", 
+      cost: 750, 
+      type: "slot", 
+      icon: Plus,
+      description: "Expand your study capacity with an additional deck slot for more content."
+    },
   ];
 
+  const { t, language } = useLanguage();
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <div className="max-w-6xl mx-auto px-4 py-8 space-y-8" dir={language === 'ar' ? 'rtl' : 'ltr'}>
       <div className="text-center space-y-4">
-        <h1 className="text-3xl font-bold">Rewards Shop</h1>
+        <h1 className="text-3xl font-bold">{t('rewardsShop')}</h1>
         <div className="coin-counter text-lg">
           <Coins className="w-5 h-5 mr-2" />
-          1,247 coins available
+          1,247 {t('coinsAvailable')}
         </div>
       </div>
 
@@ -30,6 +61,9 @@ export default function Rewards() {
               <CardTitle className="text-lg">{reward.name}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-center">
+              <p className="text-sm text-muted-foreground h-12 flex items-center justify-center">
+                {reward.description}
+              </p>
               <div className="coin-counter">
                 <Coins className="w-4 h-4 mr-1" />
                 {reward.cost}

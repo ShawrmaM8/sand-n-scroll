@@ -1,28 +1,33 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { Menu, X, Home, BookOpen, Gift, MessageSquare, User, Coins, Flame } from "lucide-react";
+import { Menu, X, Home, BookOpen, Gift, MessageSquare, User, Coins, Flame, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { NavLink } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const navItems = [
-  { title: "Home", url: "/", icon: Home },
-  { title: "SRS Study", url: "/srs", icon: BookOpen },
-  { title: "Decks", url: "/decks", icon: BookOpen },
-  { title: "Rewards", url: "/rewards", icon: Gift },
-  { title: "Forum", url: "/forum", icon: MessageSquare },
-  { title: "Profile", url: "/profile", icon: User },
+const getNavItems = (t: (key: string) => string) => [
+  { title: t('home'), url: "/", icon: Home },
+  { title: t('srs'), url: "/srs", icon: BookOpen },
+  { title: t('decks'), url: "/decks", icon: BookOpen },
+  { title: t('rewards'), url: "/rewards", icon: Gift },
+  { title: t('forum'), url: "/forum", icon: MessageSquare },
+  { title: t('profile'), url: "/profile", icon: User },
+  { title: t('about'), url: "/about", icon: User },
 ];
 
 export default function Layout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { language, toggleLanguage, t } = useLanguage();
   
   // Mock user data - in real app this would come from context/store
   const coins = 1247;
   const streak = 12;
+  
+  const navItems = getNavItems(t);
 
   return (
-    <div className="min-h-screen bg-background geometric-pattern">
+    <div className="min-h-screen bg-background geometric-pattern" dir={language === 'ar' ? 'rtl' : 'ltr'}>
       {/* Top Navigation Bar */}
       <header className="bg-card/80 backdrop-blur-sm border-b border-border sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -51,8 +56,13 @@ export default function Layout() {
               ))}
             </nav>
 
-            {/* Stats & Mobile Menu */}
+            {/* Language Toggle, Stats & Mobile Menu */}
             <div className="flex items-center space-x-4">
+              {/* Language Toggle */}
+              <Button variant="ghost" size="icon" onClick={toggleLanguage}>
+                <Globe className="w-5 h-5" />
+              </Button>
+              
               {/* Stats Display */}
               <div className="hidden sm:flex items-center space-x-3">
                 <div className="coin-counter flex items-center space-x-1">
