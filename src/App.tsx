@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import Layout from "./components/Layout";
+import Landing from "./pages/Landing";
 import Index from "./pages/Index";
 import SRS from "./pages/SRS";
 import Decks from "./pages/Decks";
@@ -26,6 +27,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            <Route path="/landing" element={<Landing />} />
             <Route path="/" element={<Layout />}>
               <Route index element={<Index />} />
               <Route path="srs" element={<SRS />} />
