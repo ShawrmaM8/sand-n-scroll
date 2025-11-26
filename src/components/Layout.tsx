@@ -8,10 +8,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const getNavItems = (t: (key: string) => string) => [
   { title: t('home'), url: "/", icon: Home },
-  { title: t('srs'), url: "/srs", icon: BookOpen },
-  { title: t('decks'), url: "/decks", icon: BookOpen },
   { title: t('rewards'), url: "/rewards", icon: Gift },
-  { title: t('forum'), url: "/forum", icon: MessageSquare },
   { title: t('profile'), url: "/profile", icon: User },
   { title: t('about'), url: "/about", icon: User },
 ];
@@ -37,7 +34,7 @@ export default function Layout() {
               <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
                 <BookOpen className="w-6 h-6 text-primary-foreground" />
               </div>
-              <h1 className="text-xl font-bold text-foreground">عربي SRS</h1>
+              <h1 className="text-xl font-bold text-foreground">بطاقي</h1>
             </div>
 
             {/* Desktop Navigation */}
@@ -88,7 +85,7 @@ export default function Layout() {
                       <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                         <BookOpen className="w-5 h-5 text-primary-foreground" />
                       </div>
-                      <span>عربي SRS</span>
+                      <span>بطاقي</span>
                     </SheetTitle>
                   </SheetHeader>
                   
