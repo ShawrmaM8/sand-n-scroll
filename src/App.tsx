@@ -6,13 +6,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import Layout from "./components/Layout";
 import Landing from "./pages/Landing";
+import Auth from "./pages/Auth";
 import Index from "./pages/Index";
-import SRS from "./pages/SRS";
-import Decks from "./pages/Decks";
-import DeckPreview from "./pages/DeckPreview";
-import DeckStudy from "./pages/DeckStudy";
+import TextInput from "./pages/TextInput";
+import FlashcardReview from "./pages/FlashcardReview";
+import ScenarioMode from "./pages/ScenarioMode";
+import ScenarioTest from "./pages/ScenarioTest";
 import Rewards from "./pages/Rewards";
-import Forum from "./pages/Forum";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
@@ -28,14 +28,14 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/landing" element={<Landing />} />
+            <Route path="/auth" element={<Auth />} />
             <Route path="/" element={<Layout />}>
               <Route index element={<Index />} />
-              <Route path="srs" element={<SRS />} />
-              <Route path="decks" element={<Decks />} />
-              <Route path="deck/:deckId/preview" element={<DeckPreview />} />
-              <Route path="deck/:deckId/study" element={<DeckStudy />} />
+              <Route path="text-input" element={<TextInput />} />
+              <Route path="flashcard-review/:sessionId" element={<FlashcardReview />} />
+              <Route path="scenario-mode/:sessionId" element={<ScenarioMode />} />
+              <Route path="scenario-test/:scenarioId" element={<ScenarioTest />} />
               <Route path="rewards" element={<Rewards />} />
-              <Route path="forum" element={<Forum />} />
               <Route path="profile" element={<Profile />} />
               <Route path="about" element={<About />} />
             </Route>
