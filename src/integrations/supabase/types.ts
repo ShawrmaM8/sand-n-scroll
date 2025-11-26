@@ -14,7 +14,175 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      flashcard_sessions: {
+        Row: {
+          created_at: string | null
+          flashcard_count: number
+          flashcards: Json
+          id: string
+          original_text: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          flashcard_count: number
+          flashcards: Json
+          id?: string
+          original_text: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          flashcard_count?: number
+          flashcards?: Json
+          id?: string
+          original_text?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          country: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          updated_at: string | null
+          username: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          country?: string | null
+          created_at?: string | null
+          description?: string | null
+          id: string
+          updated_at?: string | null
+          username: string
+        }
+        Update: {
+          avatar_url?: string | null
+          country?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          updated_at?: string | null
+          username?: string
+        }
+        Relationships: []
+      }
+      scenarios: {
+        Row: {
+          created_at: string | null
+          description: string
+          difficulty: string
+          id: string
+          questions: Json
+          session_id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          difficulty: string
+          id?: string
+          questions: Json
+          session_id: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          difficulty?: string
+          id?: string
+          questions?: Json
+          session_id?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scenarios_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "flashcard_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_progress: {
+        Row: {
+          coins: number | null
+          created_at: string | null
+          id: string
+          last_activity_date: string | null
+          level: number | null
+          streak_days: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          coins?: number | null
+          created_at?: string | null
+          id?: string
+          last_activity_date?: string | null
+          level?: number | null
+          streak_days?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          coins?: number | null
+          created_at?: string | null
+          id?: string
+          last_activity_date?: string | null
+          level?: number | null
+          streak_days?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_scores: {
+        Row: {
+          completed_at: string | null
+          difficulty: string
+          id: string
+          scenario_id: string
+          score: number
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          difficulty: string
+          id?: string
+          scenario_id: string
+          score: number
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          difficulty?: string
+          id?: string
+          scenario_id?: string
+          score?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_scores_scenario_id_fkey"
+            columns: ["scenario_id"]
+            isOneToOne: false
+            referencedRelation: "scenarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
