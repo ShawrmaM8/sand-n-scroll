@@ -1,32 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useState } from "react";
 import {
   Brain,
   Zap,
-  Users,
   Trophy,
-  Globe,
   Sparkles,
   Target,
   ChevronRight,
   Star,
   BookOpen,
-  MessageSquare,
   Award,
   Languages,
-  X,
+  Upload,
+  FileText,
+  TestTube,
 } from "lucide-react";
 import dallahLogo from "@/assets/dallah-logo.png";
 
@@ -38,6 +28,12 @@ const translations = {
       learnMore: "Learn More",
       premiumLearning: "Premium Learning",
       adaptiveLearning: "Adaptive Learning",
+    },
+    badges: {
+      aiPowered: "AI-Powered Flashcards",
+      scenarioBased: "Scenario Testing",
+      adaptive: "Adaptive Difficulty",
+      rewards: "Gamified Rewards",
     },
     features: {
       title: "Why Choose Botaqiq?",
@@ -79,25 +75,13 @@ const translations = {
       title: "Ready to Master Arabic?",
       subtitle: "Join Botaqiq today and experience the most engaging way to learn Arabic through intelligent flashcards and AI-powered scenarios.",
       getStarted: "Get Started Free",
-      exploreMore: "Explore Features",
+      exploreMore: "Learn More",
     },
     footer: {
       subtitle: "Elevating Arabic learning through intelligent AI-powered education",
       about: "About",
       profile: "Profile",
       rewards: "Rewards",
-    },
-    support: {
-      title: "Support Our Development",
-      emailPlaceholder: "Enter your email",
-      fundLaunch: "Fund Our Launch",
-      monthlyLabel: "(monthly costs)",
-      hosting: "Hosting, $21.32",
-      database: "Database, $25.12",
-      developerTools: "Developer Tools, $20.00",
-      userAcquisition: "User Acquisition, $180",
-      evaluateTitle: "Evaluate & Collaborate On Our Prototype",
-      visit: "VISIT",
     },
   },
   ar: {
@@ -107,6 +91,12 @@ const translations = {
       learnMore: "اعرف المزيد",
       premiumLearning: "تعلم مميز",
       adaptiveLearning: "تعلم تكيفي",
+    },
+    badges: {
+      aiPowered: "بطاقات ذكية",
+      scenarioBased: "اختبار سيناريو",
+      adaptive: "صعوبة تكيفية",
+      rewards: "مكافآت مُلعَّبة",
     },
     features: {
       title: "لماذا تختار بطاقي؟",
@@ -148,7 +138,7 @@ const translations = {
       title: "مستعد لإتقان اللغة العربية؟",
       subtitle: "انضم إلى بطاقي اليوم واختبر أكثر الطرق إثارة لتعلم اللغة العربية من خلال البطاقات التعليمية الذكية والسيناريوهات المدعومة بالذكاء الاصطناعي.",
       getStarted: "ابدأ مجاناً",
-      exploreMore: "استكشف المزايا",
+      exploreMore: "اعرف المزيد",
     },
     footer: {
       subtitle: "رفع مستوى تعلم اللغة العربية من خلال التعليم الذكي المدعوم بالذكاء الاصطناعي",
@@ -156,26 +146,12 @@ const translations = {
       profile: "الملف الشخصي",
       rewards: "المكافآت",
     },
-    support: {
-      title: "ادعم تطويرنا",
-      emailPlaceholder: "أدخل بريدك الإلكتروني",
-      fundLaunch: "موّل إطلاقنا",
-      monthlyLabel: "(التكاليف الشهرية)",
-      hosting: "الاستضافة، $21.32",
-      database: "قاعدة البيانات، $25.12",
-      developerTools: "أدوات المطورين، $20.00",
-      userAcquisition: "اكتساب المستخدمين، $180",
-      evaluateTitle: "قيّم وتعاون على نموذجنا الأولي",
-      visit: "زيارة",
-    },
   },
 };
 
 const Landing = () => {
   const navigate = useNavigate();
   const { language, toggleLanguage } = useLanguage();
-  const [email, setEmail] = useState("");
-  const [showAcquisitionModal, setShowAcquisitionModal] = useState(false);
   const t = translations[language];
   const isRTL = language === "ar";
 
@@ -200,12 +176,12 @@ const Landing = () => {
         <div className="relative max-w-6xl mx-auto text-center space-y-8 animate-fade-in">
           {/* Logo/Brand */}
           <div className="space-y-4">
-            <img src={dallahLogo} alt="Gulfara Dallah Logo" className="w-24 h-24 mx-auto animate-fade-in" />
+            <img src={dallahLogo} alt="Botaqiq Logo" className="w-24 h-24 mx-auto animate-fade-in" />
             <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              Gulfara
+              Botaqiq
             </h1>
             <p className="text-3xl md:text-4xl font-semibold text-muted-foreground" dir="rtl">
-              غلفارا
+              بطاقي
             </p>
           </div>
 
@@ -218,19 +194,19 @@ const Landing = () => {
           <div className="flex flex-wrap justify-center gap-3 pt-4">
             <Badge variant="secondary" className="px-4 py-2 text-sm">
               <Brain className={`w-4 h-4 ${isRTL ? "ml-2" : "mr-2"}`} />
-              {t.badges.adaptiveSRS}
+              {t.badges.aiPowered}
+            </Badge>
+            <Badge variant="secondary" className="px-4 py-2 text-sm">
+              <TestTube className={`w-4 h-4 ${isRTL ? "ml-2" : "mr-2"}`} />
+              {t.badges.scenarioBased}
             </Badge>
             <Badge variant="secondary" className="px-4 py-2 text-sm">
               <Zap className={`w-4 h-4 ${isRTL ? "ml-2" : "mr-2"}`} />
-              {t.badges.offlineFirst}
-            </Badge>
-            <Badge variant="secondary" className="px-4 py-2 text-sm">
-              <Users className={`w-4 h-4 ${isRTL ? "ml-2" : "mr-2"}`} />
-              {t.badges.communityTrading}
+              {t.badges.adaptive}
             </Badge>
             <Badge variant="secondary" className="px-4 py-2 text-sm">
               <Trophy className={`w-4 h-4 ${isRTL ? "ml-2" : "mr-2"}`} />
-              {t.badges.gamifiedRewards}
+              {t.badges.rewards}
             </Badge>
           </div>
 
@@ -239,7 +215,7 @@ const Landing = () => {
             <Button
               size="lg"
               className="luxury-button text-lg px-8 py-6"
-              onClick={() => navigate("/srs")}
+              onClick={() => navigate("/auth")}
             >
               {t.hero.startLearning}
               <ChevronRight className={`w-5 h-5 ${isRTL ? "mr-2" : "ml-2"}`} />
@@ -262,8 +238,8 @@ const Landing = () => {
             </div>
             <div className="hidden sm:block w-px h-6 bg-border" />
             <div className="flex items-center gap-2">
-              <Globe className="w-5 h-5 text-accent" />
-              <span className="font-semibold text-foreground">{t.hero.gulfFocused}</span>
+              <Sparkles className="w-5 h-5 text-accent" />
+              <span className="font-semibold text-foreground">{t.hero.adaptiveLearning}</span>
             </div>
           </div>
         </div>
@@ -300,13 +276,13 @@ const Landing = () => {
             <Card className="flashcard group">
               <div className="space-y-4">
                 <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-[var(--card-shadow)]">
-                  <Zap className="w-7 h-7 text-primary-foreground" />
+                  <TestTube className="w-7 h-7 text-primary-foreground" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground">
-                  {t.features.offlineFirst.title}
+                  {t.features.scenarioBased.title}
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  {t.features.offlineFirst.desc}
+                  {t.features.scenarioBased.desc}
                 </p>
               </div>
             </Card>
@@ -314,7 +290,21 @@ const Landing = () => {
             <Card className="flashcard group">
               <div className="space-y-4">
                 <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center shadow-[var(--luxury-shadow)]">
-                  <Trophy className="w-7 h-7 text-accent-foreground" />
+                  <Zap className="w-7 h-7 text-accent-foreground" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground">
+                  {t.features.adaptiveDifficulty.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {t.features.adaptiveDifficulty.desc}
+                </p>
+              </div>
+            </Card>
+
+            <Card className="flashcard group">
+              <div className="space-y-4">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-[var(--card-shadow)]">
+                  <Trophy className="w-7 h-7 text-primary-foreground" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground">
                   {t.features.gamifiedRewards.title}
@@ -327,28 +317,14 @@ const Landing = () => {
 
             <Card className="flashcard group">
               <div className="space-y-4">
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-[var(--card-shadow)]">
-                  <Users className="w-7 h-7 text-primary-foreground" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground">
-                  {t.features.communityTrading.title}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  {t.features.communityTrading.desc}
-                </p>
-              </div>
-            </Card>
-
-            <Card className="flashcard group">
-              <div className="space-y-4">
                 <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center shadow-[var(--luxury-shadow)]">
-                  <BookOpen className="w-7 h-7 text-accent-foreground" />
+                  <Upload className="w-7 h-7 text-accent-foreground" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground">
-                  {t.features.curatedContent.title}
+                  {t.features.textToLearning.title}
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  {t.features.curatedContent.desc}
+                  {t.features.textToLearning.desc}
                 </p>
               </div>
             </Card>
@@ -386,25 +362,25 @@ const Landing = () => {
             {[
               {
                 step: "01",
-                icon: Target,
+                icon: Upload,
                 title: t.journey.step1.title,
                 description: t.journey.step1.desc,
               },
               {
                 step: "02",
-                icon: Brain,
+                icon: FileText,
                 title: t.journey.step2.title,
                 description: t.journey.step2.desc,
               },
               {
                 step: "03",
-                icon: Award,
+                icon: TestTube,
                 title: t.journey.step3.title,
                 description: t.journey.step3.desc,
               },
               {
                 step: "04",
-                icon: MessageSquare,
+                icon: Award,
                 title: t.journey.step4.title,
                 description: t.journey.step4.desc,
               },
@@ -432,85 +408,6 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Support Our Development Section */}
-      <section className="py-24 px-4 bg-card/30">
-        <div className="max-w-6xl mx-auto space-y-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-foreground">
-            {t.support.title}
-          </h2>
-          
-          {/* Email Input */}
-          <div className="max-w-md mx-auto">
-            <Input
-              type="email"
-              placeholder={t.support.emailPlaceholder}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="text-center text-lg py-6"
-            />
-          </div>
-
-          {/* Support Frames */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Fund Our Launch Frame */}
-            <Card className="flashcard group hover:scale-105 transition-all duration-300">
-              <div className="space-y-6 p-6">
-                <h3 className="text-2xl font-bold text-center text-foreground">
-                  {t.support.fundLaunch}
-                </h3>
-                <div className="space-y-3">
-                  {[
-                    { label: t.support.hosting, clickable: false },
-                    { label: t.support.database, clickable: false },
-                    { label: t.support.developerTools, clickable: false },
-                    { label: t.support.userAcquisition, clickable: true },
-                  ].map((item, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => item.clickable && setShowAcquisitionModal(true)}
-                      className={`w-full px-4 py-3 border-2 border-border rounded-lg text-sm font-medium transition-all ${
-                        item.clickable
-                          ? "hover:bg-accent hover:text-accent-foreground hover:border-accent cursor-pointer"
-                          : "cursor-default"
-                      }`}
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-                <p className="text-center text-sm text-muted-foreground">
-                  {t.support.monthlyLabel}
-                </p>
-              </div>
-            </Card>
-
-            {/* Evaluate & Collaborate Frame */}
-            <Card className="flashcard group hover:scale-105 transition-all duration-300">
-              <div className="space-y-6 p-6 flex flex-col justify-between h-full">
-                <div className="space-y-6">
-                  <h3 className="text-2xl font-bold text-center text-foreground">
-                    {t.support.evaluateTitle}
-                  </h3>
-                  <div className="flex items-center justify-center">
-                    <div className="text-6xl font-bold text-foreground border-4 border-border rounded-lg px-8 py-4">
-                      VISIT
-                    </div>
-                  </div>
-                </div>
-                <Button
-                  size="lg"
-                  className="luxury-button w-full text-lg"
-                  onClick={() => navigate("/")}
-                >
-                  {t.support.visit}
-                  <ChevronRight className={`w-5 h-5 ${isRTL ? "mr-2" : "ml-2"}`} />
-                </Button>
-              </div>
-            </Card>
-          </div>
-        </div>
-      </section>
-
       {/* Final CTA */}
       <section className="py-24 px-4 bg-gradient-to-br from-primary to-primary/90 text-primary-foreground">
         <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in">
@@ -525,7 +422,7 @@ const Landing = () => {
               size="lg"
               variant="secondary"
               className="text-lg px-8 py-6 bg-card text-card-foreground hover:bg-card/90"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/auth")}
             >
               {t.cta.getStarted}
               <ChevronRight className={`w-5 h-5 ${isRTL ? "mr-2" : "ml-2"}`} />
@@ -534,9 +431,9 @@ const Landing = () => {
               size="lg"
               variant="outline"
               className="text-lg px-8 py-6 border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
-              onClick={() => navigate("/forum")}
+              onClick={() => navigate("/about")}
             >
-              {t.cta.exploreCommunity}
+              {t.cta.exploreMore}
             </Button>
           </div>
         </div>
@@ -546,9 +443,9 @@ const Landing = () => {
       <footer className="py-12 px-4 bg-card/50 border-t">
         <div className="max-w-6xl mx-auto text-center space-y-4">
           <div className="flex justify-center items-center gap-2">
-            <img src={dallahLogo} alt="Gulfara Logo" className="w-8 h-8" />
-            <h3 className="text-2xl font-bold text-foreground">Gulfara</h3>
-            <span className="text-xl text-muted-foreground" dir="rtl">غلفارا</span>
+            <img src={dallahLogo} alt="Botaqiq Logo" className="w-8 h-8" />
+            <h3 className="text-2xl font-bold text-foreground">Botaqiq</h3>
+            <span className="text-xl text-muted-foreground" dir="rtl">بطاقي</span>
           </div>
           <p className="text-sm text-muted-foreground">
             {t.footer.subtitle}
@@ -557,8 +454,8 @@ const Landing = () => {
             <button onClick={() => navigate("/about")} className="hover:text-foreground transition-colors">
               {t.footer.about}
             </button>
-            <button onClick={() => navigate("/forum")} className="hover:text-foreground transition-colors">
-              {t.footer.forum}
+            <button onClick={() => navigate("/profile")} className="hover:text-foreground transition-colors">
+              {t.footer.profile}
             </button>
             <button onClick={() => navigate("/rewards")} className="hover:text-foreground transition-colors">
               {t.footer.rewards}
@@ -566,87 +463,6 @@ const Landing = () => {
           </div>
         </div>
       </footer>
-
-      {/* User Acquisition Modal */}
-      <Dialog open={showAcquisitionModal} onOpenChange={setShowAcquisitionModal}>
-        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <div className="flex items-center justify-between">
-              <DialogTitle className="text-2xl font-bold">{t.support.acquisitionModalTitle}</DialogTitle>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setShowAcquisitionModal(false)}
-              >
-                <X className="w-5 h-5" />
-              </Button>
-            </div>
-            <DialogDescription>
-              {t.support.acquisitionModalDesc}
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="space-y-6 pt-4">
-            {/* Calculations Table */}
-            <div className="bg-card/50 rounded-lg p-6 space-y-4">
-              <h3 className="text-lg font-bold text-foreground">
-                {language === "en" 
-                  ? "Calculations (Impressions = Budget ÷ CPM × 1,000):" 
-                  : "الحسابات (الظهورات = الميزانية ÷ تكلفة الألف ظهور × ١٬٠٠٠):"}
-              </h3>
-              
-              {/* Table Header */}
-              <div className="grid grid-cols-3 gap-4 pb-2 border-b">
-                <div className="font-semibold text-foreground">{t.support.targeting}</div>
-                <div className="font-semibold text-foreground">{t.support.cpm}</div>
-                <div className="font-semibold text-foreground">{t.support.impressions}</div>
-              </div>
-              
-              {/* Table Rows */}
-              <div className="grid grid-cols-3 gap-4 py-3 border-b">
-                <div className="text-muted-foreground">{t.support.broad}</div>
-                <div className="text-foreground">$1.50</div>
-                <div className="text-foreground">≈ 120,000</div>
-              </div>
-              
-              <div className="grid grid-cols-3 gap-4 py-3 border-b">
-                <div className="text-muted-foreground">{t.support.interestBased}</div>
-                <div className="text-foreground">$3.00</div>
-                <div className="text-foreground">≈ 60,000</div>
-              </div>
-              
-              <div className="grid grid-cols-3 gap-4 py-3">
-                <div className="text-muted-foreground">{t.support.nicheSubreddit}</div>
-                <div className="text-foreground">$5.00</div>
-                <div className="text-foreground">≈ 36,000</div>
-              </div>
-            </div>
-
-            {/* Summary Section */}
-            <div className="bg-card/50 rounded-lg p-6 space-y-4">
-              <h3 className="text-lg font-bold text-foreground">{t.support.summaryTitle}</h3>
-              <ul className="space-y-3 text-muted-foreground">
-                <li className="flex gap-2">
-                  <span className="text-accent">•</span>
-                  <span>{t.support.summaryRange}</span>
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-accent">•</span>
-                  <span>{t.support.summaryStrategy}</span>
-                </li>
-              </ul>
-            </div>
-
-            <Button
-              size="lg"
-              className="w-full luxury-button"
-              onClick={() => setShowAcquisitionModal(false)}
-            >
-              {t.support.close}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
