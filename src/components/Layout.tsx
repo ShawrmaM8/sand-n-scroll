@@ -1,27 +1,23 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { Menu, X, Home, BookOpen, Gift, MessageSquare, User, Coins, Flame, Globe } from "lucide-react";
+import { Menu, Home, Gift, User, Coins, Flame, Globe, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { NavLink } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-const getNavItems = (t: (key: string) => string) => [
-  { title: t('home'), url: "/", icon: Home },
-  { title: t('rewards'), url: "/rewards", icon: Gift },
-  { title: t('profile'), url: "/profile", icon: User },
-  { title: t('about'), url: "/about", icon: User },
-];
+import { useUserProgress } from "@/hooks/useUserProgress";
 
 export default function Layout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { language, toggleLanguage, t } = useLanguage();
-  
-  // Mock user data - in real app this would come from context/store
-  const coins = 1247;
-  const streak = 12;
-  
-  const navItems = getNavItems(t);
+  const { progress } = useUserProgress();
+
+  const navItems = [
+    { title: t('home'), url: "/", icon: Home },
+    { title: t('rewards'), url: "/rewards", icon: Gift },
+    { title: t('profile'), url: "/profile", icon: User },
+    { title: t('about'), url: "/about", icon: Info },
+  ];
 
   return (
     <div className="min-h-screen bg-background geometric-pattern" dir={language === 'ar' ? 'rtl' : 'ltr'}>
@@ -30,15 +26,15 @@ export default function Layout() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <div className="flex items-center space-x-3">
+            <NavLink to="/" className="flex items-center gap-3">
               <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-                <BookOpen className="w-6 h-6 text-primary-foreground" />
+                <span className="text-primary-foreground font-bold text-lg">ب</span>
               </div>
-              <h1 className="text-xl font-bold text-foreground">بطاقي</h1>
-            </div>
+              <h1 className="text-xl font-bold text-foreground">{t('appName')}</h1>
+            </NavLink>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-1">
+            <nav className="hidden md:flex items-center gap-1">
               {navItems.map((item) => (
                 <NavLink
                   key={item.url}
@@ -54,21 +50,26 @@ export default function Layout() {
             </nav>
 
             {/* Language Toggle, Stats & Mobile Menu */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-4">
               {/* Language Toggle */}
-              <Button variant="ghost" size="icon" onClick={toggleLanguage}>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={toggleLanguage}
+                title={language === 'ar' ? 'Switch to English' : 'التبديل للعربية'}
+              >
                 <Globe className="w-5 h-5" />
               </Button>
               
               {/* Stats Display */}
-              <div className="hidden sm:flex items-center space-x-3">
-                <div className="coin-counter flex items-center space-x-1">
+              <div className="hidden sm:flex items-center gap-3">
+                <div className="coin-counter flex items-center gap-1">
                   <Coins className="w-4 h-4" />
-                  <span>{coins.toLocaleString()}</span>
+                  <span>{progress.coins.toLocaleString()}</span>
                 </div>
-                <div className="streak-badge flex items-center space-x-1">
+                <div className="streak-badge flex items-center gap-1">
                   <Flame className="w-4 h-4" />
-                  <span>{streak}</span>
+                  <span>{progress.streak_days}</span>
                 </div>
               </div>
 
@@ -79,25 +80,25 @@ export default function Layout() {
                     <Menu className="w-6 h-6" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-80">
+                <SheetContent side={language === 'ar' ? 'left' : 'right'} className="w-80">
                   <SheetHeader>
-                    <SheetTitle className="flex items-center space-x-3">
+                    <SheetTitle className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                        <BookOpen className="w-5 h-5 text-primary-foreground" />
+                        <span className="text-primary-foreground font-bold">ب</span>
                       </div>
-                      <span>بطاقي</span>
+                      <span>{t('appName')}</span>
                     </SheetTitle>
                   </SheetHeader>
                   
                   {/* Mobile Stats */}
-                  <div className="flex items-center justify-center space-x-4 mt-6 mb-8">
-                    <div className="coin-counter flex items-center space-x-1">
+                  <div className="flex items-center justify-center gap-4 mt-6 mb-8">
+                    <div className="coin-counter flex items-center gap-1">
                       <Coins className="w-4 h-4" />
-                      <span>{coins.toLocaleString()}</span>
+                      <span>{progress.coins.toLocaleString()}</span>
                     </div>
-                    <div className="streak-badge flex items-center space-x-1">
+                    <div className="streak-badge flex items-center gap-1">
                       <Flame className="w-4 h-4" />
-                      <span>{streak}</span>
+                      <span>{progress.streak_days}</span>
                     </div>
                   </div>
 
