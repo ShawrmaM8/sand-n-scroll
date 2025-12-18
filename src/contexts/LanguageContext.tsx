@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface LanguageContextType {
   language: 'en' | 'ar';
@@ -26,6 +26,7 @@ const translations = {
     error: "Error",
     needAccount: "Need an account? Sign up",
     haveAccount: "Already have an account? Login",
+    loginRequired: "Please login to continue",
     
     // Text Input
     inputText: "Input Text",
@@ -60,6 +61,10 @@ const translations = {
     previousScenarios: "Previous Scenarios",
     takeTest: "Take Test",
     scenarioGenerated: "Scenario generated successfully!",
+    chooseScenario: "Choose a Scenario",
+    selectDifficultyPrompt: "Select a difficulty level above to see available scenarios",
+    questions: "questions",
+    scenarioNotFound: "Scenario not found",
     
     // Scenario Test
     question: "Question",
@@ -69,12 +74,18 @@ const translations = {
     earned: "You earned",
     goHome: "Go Home",
     retake: "Retake Test",
+    backToScenarios: "Back to Scenarios",
+    coinsEarned: "Coins Earned",
+    accuracy: "Accuracy",
+    correctAnswer: "Correct! Well done!",
+    wrongAnswer: "Not quite right. Keep learning!",
     
     // Navigation
     home: "Home",
     profile: "Profile",
     rewards: "Rewards",
     logout: "Logout",
+    about: "About",
     
     // Profile
     editProfile: "Edit Profile",
@@ -95,14 +106,35 @@ const translations = {
     session: "Session",
     coinsAvailable: "coins available",
     purchase: "Purchase",
+    purchasing: "Purchasing...",
+    purchased: "Purchased",
+    purchaseSuccess: "Purchase Successful!",
+    purchaseFailed: "Purchase failed. Please try again.",
+    insufficientCoins: "Not enough coins",
+    notEnoughCoinsDesc: "Earn more coins by completing scenarios!",
     
     // Dashboard
     startLearning: "Start Learning",
     continueSession: "Continue Session",
     mySessions: "My Sessions",
+    dailyGoal: "Daily Goal",
+    cardsRemaining: "cards remaining",
+    currentStreak: "Current Streak",
+    daysInRow: "days in a row",
+    onFire: "On fire!",
+    totalCoins: "Total Coins",
+    earnedCoins: "earned coins",
+    spendCoins: "Spend Coins",
+    startSession: "Start SRS Session",
+    continueWhere: "Continue where you left off",
+    cardsStudied: "Cards Studied",
+    activeDecks: "Active Decks",
+    currentLevel: "Current Level",
+    welcomeBack: "Welcome back!",
+    readyToContinue: "Ready to continue your Arabic journey?",
     
     // Landing
-    appName: "Botaqiq",
+    appName: "Botaqiy",
     tagline: "Arabic, Your Way",
     heroTitle: "Master Arabic Through Adaptive Learning",
     heroDesc: "Transform any text into personalized flashcards and realistic scenarios. Learn at your own pace with AI-powered adaptive difficulty.",
@@ -110,10 +142,21 @@ const translations = {
     learnMore: "Learn More",
     
     // About
-    aboutApp: "About Botaqiq",
+    aboutApp: "About Botaqiy",
     appVision: "Our Vision",
     howItWorks: "How It Works",
     contactUs: "Contact Us",
+    
+    // Common
+    save: "Save",
+    cancel: "Cancel",
+    delete: "Delete",
+    edit: "Edit",
+    close: "Close",
+    confirm: "Confirm",
+    back: "Back",
+    offline: "Offline",
+    online: "Online",
   },
   ar: {
     // Auth
@@ -134,6 +177,7 @@ const translations = {
     error: "خطأ",
     needAccount: "تحتاج إلى حساب؟ سجّل الآن",
     haveAccount: "لديك حساب؟ سجّل الدخول",
+    loginRequired: "يرجى تسجيل الدخول للمتابعة",
     
     // Text Input
     inputText: "إدخال النص",
@@ -168,6 +212,10 @@ const translations = {
     previousScenarios: "السيناريوهات السابقة",
     takeTest: "خوض الاختبار",
     scenarioGenerated: "تم إنشاء السيناريو بنجاح!",
+    chooseScenario: "اختر سيناريو",
+    selectDifficultyPrompt: "اختر مستوى الصعوبة أعلاه لرؤية السيناريوهات المتاحة",
+    questions: "أسئلة",
+    scenarioNotFound: "السيناريو غير موجود",
     
     // Scenario Test
     question: "سؤال",
@@ -177,12 +225,18 @@ const translations = {
     earned: "لقد ربحت",
     goHome: "العودة للرئيسية",
     retake: "إعادة الاختبار",
+    backToScenarios: "العودة للسيناريوهات",
+    coinsEarned: "العملات المكتسبة",
+    accuracy: "الدقة",
+    correctAnswer: "صحيح! أحسنت!",
+    wrongAnswer: "ليس صحيحاً تماماً. واصل التعلم!",
     
     // Navigation
     home: "الرئيسية",
     profile: "الملف الشخصي",
     rewards: "المكافآت",
     logout: "تسجيل الخروج",
+    about: "حول",
     
     // Profile
     editProfile: "تعديل الملف",
@@ -203,11 +257,32 @@ const translations = {
     session: "جلسة",
     coinsAvailable: "عملة متاحة",
     purchase: "شراء",
+    purchasing: "جارٍ الشراء...",
+    purchased: "تم الشراء",
+    purchaseSuccess: "تم الشراء بنجاح!",
+    purchaseFailed: "فشل الشراء. يرجى المحاولة مرة أخرى.",
+    insufficientCoins: "عملات غير كافية",
+    notEnoughCoinsDesc: "اكسب المزيد من العملات بإكمال السيناريوهات!",
     
     // Dashboard
     startLearning: "بدء التعلم",
     continueSession: "متابعة الجلسة",
     mySessions: "جلساتي",
+    dailyGoal: "الهدف اليومي",
+    cardsRemaining: "بطاقات متبقية",
+    currentStreak: "السلسلة الحالية",
+    daysInRow: "أيام متتالية",
+    onFire: "مشتعل!",
+    totalCoins: "إجمالي العملات",
+    earnedCoins: "عملات مكتسبة",
+    spendCoins: "إنفاق العملات",
+    startSession: "بدء جلسة SRS",
+    continueWhere: "تابع من حيث توقفت",
+    cardsStudied: "البطاقات المدروسة",
+    activeDecks: "المجموعات النشطة",
+    currentLevel: "المستوى الحالي",
+    welcomeBack: "مرحباً بعودتك!",
+    readyToContinue: "هل أنت مستعد لمواصلة رحلتك في العربية؟",
     
     // Landing
     appName: "بطاقي",
@@ -222,6 +297,17 @@ const translations = {
     appVision: "رؤيتنا",
     howItWorks: "كيف يعمل",
     contactUs: "اتصل بنا",
+    
+    // Common
+    save: "حفظ",
+    cancel: "إلغاء",
+    delete: "حذف",
+    edit: "تعديل",
+    close: "إغلاق",
+    confirm: "تأكيد",
+    back: "رجوع",
+    offline: "غير متصل",
+    online: "متصل",
   }
 };
 
@@ -230,9 +316,13 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<'en' | 'ar'>('en');
 
+  useEffect(() => {
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = language;
+  }, [language]);
+
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'en' ? 'ar' : 'en');
-    document.documentElement.dir = language === 'en' ? 'rtl' : 'ltr';
   };
 
   const t = (key: string): string => {
