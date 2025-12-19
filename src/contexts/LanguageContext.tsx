@@ -93,10 +93,13 @@ const translations = {
     coins: "Coins",
     level: "Level",
     streak: "Day Streak",
+    dayStreak: "Day Streak",
     badges: "Badges",
+    achievementBadges: "Achievement Badges",
     sessions: "Sessions Completed",
     description: "Description",
     country: "Country",
+    badgeEarned: "Earned",
     
     // Rewards
     rewardsShop: "Rewards Shop",
@@ -244,10 +247,13 @@ const translations = {
     coins: "العملات",
     level: "المستوى",
     streak: "السلسلة اليومية",
+    dayStreak: "السلسلة اليومية",
     badges: "الشارات",
+    achievementBadges: "شارات الإنجاز",
     sessions: "الجلسات المكتملة",
     description: "الوصف",
     country: "البلد",
+    badgeEarned: "مكتسبة",
     
     // Rewards
     rewardsShop: "متجر المكافآت",

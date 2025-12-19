@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Coins, Flame, BookOpen, Target, Star, Shield, Award } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useUserProgress } from "@/hooks/useUserProgress";
+import { supabase } from "@/integrations/supabase/client";
 import EditProfileDialog from "@/components/EditProfileDialog";
 import ShareStatsDialog from "@/components/ShareStatsDialog";
 
 export default function Profile() {
   const { t, language } = useLanguage();
+  const { progress, loading: progressLoading } = useUserProgress();
   const [profile, setProfile] = useState({
     username: language === 'ar' ? 'المستخدم' : 'User',
     description: language === 'ar' ? 'متحمس لتعلم اللغة العربية' : 'Arabic Learning Enthusiast',
@@ -16,19 +19,43 @@ export default function Profile() {
     avatar: 'U'
   });
 
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  const loadProfile = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data } = await supabase
+        .from('profiles')
+        .select('username, description, country, avatar_url')
+        .eq('id', user.id)
+        .maybeSingle();
+      
+      if (data) {
+        setProfile({
+          username: data.username || 'User',
+          description: data.description || (language === 'ar' ? 'متحمس لتعلم اللغة العربية' : 'Arabic Learning Enthusiast'),
+          country: data.country || '',
+          avatar: data.username?.charAt(0) || 'U'
+        });
+      }
+    }
+  };
+
   const stats = {
-    totalCoins: 1247,
-    currentStreak: 12,
-    totalCards: 189,
+    totalCoins: progress.coins,
+    currentStreak: progress.streak_days,
+    totalCards: 0, // Will be calculated from sessions
     accuracy: 87,
-    level: 7,
-    xp: 3450
+    level: progress.level,
+    xp: progress.level * 500
   };
 
   const badges = [
     { name: language === 'ar' ? 'الخطوات الأولى' : "First Steps", icon: Star, earned: true },
-    { name: language === 'ar' ? 'محارب الأسبوع' : "Week Warrior", icon: Shield, earned: true },
-    { name: language === 'ar' ? 'جامع العملات' : "Coin Collector", icon: Coins, earned: true },
+    { name: language === 'ar' ? 'محارب الأسبوع' : "Week Warrior", icon: Shield, earned: progress.streak_days >= 7 },
+    { name: language === 'ar' ? 'جامع العملات' : "Coin Collector", icon: Coins, earned: progress.coins >= 100 },
     { name: language === 'ar' ? 'الأسبوع المثالي' : "Perfect Week", icon: Award, earned: false },
   ];
 
@@ -135,7 +162,7 @@ export default function Profile() {
                 </p>
                 {badge.earned && (
                   <Badge variant="secondary" className="mt-1 text-xs">
-                    Earned
+                    {t('badgeEarned')}
                   </Badge>
                 )}
               </div>

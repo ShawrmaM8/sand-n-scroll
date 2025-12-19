@@ -109,9 +109,11 @@ CREATE POLICY "Users can create own scenarios" ON public.scenarios
 CREATE TABLE IF NOT EXISTS public.user_scores (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  scenario_id TEXT NOT NULL, -- Can be UUID or rule-based scenario ID
-  difficulty TEXT NOT NULL,
+  scenario_id TEXT NOT NULL, -- Can be UUID or rule-based scenario ID (e.g., 'easy-1')
+  difficulty TEXT NOT NULL CHECK (difficulty IN ('easy', 'medium', 'hard')),
   score INTEGER NOT NULL,
+  total_questions INTEGER DEFAULT 3,
+  correct_answers INTEGER DEFAULT 0,
   completed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

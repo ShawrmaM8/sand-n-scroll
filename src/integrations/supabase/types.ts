@@ -151,37 +151,35 @@ export type Database = {
       user_scores: {
         Row: {
           completed_at: string | null
+          correct_answers: number | null
           difficulty: string
           id: string
           scenario_id: string
           score: number
+          total_questions: number | null
           user_id: string
         }
         Insert: {
           completed_at?: string | null
+          correct_answers?: number | null
           difficulty: string
           id?: string
           scenario_id: string
           score: number
+          total_questions?: number | null
           user_id: string
         }
         Update: {
           completed_at?: string | null
+          correct_answers?: number | null
           difficulty?: string
           id?: string
           scenario_id?: string
           score?: number
+          total_questions?: number | null
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_scores_scenario_id_fkey"
-            columns: ["scenario_id"]
-            isOneToOne: false
-            referencedRelation: "scenarios"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {
