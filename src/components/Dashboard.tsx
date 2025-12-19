@@ -110,11 +110,11 @@ export default function Dashboard() {
       {/* Action Section */}
       <div className="text-center space-y-6 animate-fade-in-up">
         <Button 
-          onClick={() => navigate('/srs')}
+          onClick={() => navigate('/text-input')}
           className="luxury-button text-lg px-8 py-4 h-auto"
         >
           <Play className="w-6 h-6 mr-2 rtl:ml-2 rtl:mr-0" />
-          {t("startSession")}
+          {t("startLearning")}
         </Button>
         
         <p className="text-sm text-muted-foreground">
