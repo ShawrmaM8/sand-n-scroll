@@ -84,15 +84,17 @@ export default function ScenarioTest() {
       await refresh();
     }
 
-    // Try to save to database if authenticated
+    // Save score to database if authenticated
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         await supabase.from('user_scores').insert({
-          scenario_id: scenario.id,
+          scenario_id: scenario.id, // Rule-based ID like 'easy-1'
           user_id: user.id,
           difficulty: scenario.difficulty,
-          score: points
+          score: points,
+          total_questions: scenario.questions.length,
+          correct_answers: finalCorrect
         });
       }
     } catch (error) {
