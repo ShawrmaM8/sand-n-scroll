@@ -138,6 +138,7 @@ const translations = {
     
     // Landing
     appName: "Botaqiy",
+    textInput: "Text Input",
     tagline: "Arabic, Your Way",
     heroTitle: "Master Arabic Through Adaptive Learning",
     heroDesc: "Transform any text into personalized flashcards and realistic scenarios. Learn at your own pace with AI-powered adaptive difficulty.",
@@ -291,7 +292,8 @@ const translations = {
     readyToContinue: "هل أنت مستعد لمواصلة رحلتك في العربية؟",
     
     // Landing
-    appName: "بطاقي",
+    appName: "Botaqiy",
+    textInput: "إدخال النص",
     tagline: "العربية، بطريقتك",
     heroTitle: "إتقان العربية من خلال التعلم التكيفي",
     heroDesc: "حوّل أي نص إلى بطاقات تعليمية مخصصة وسيناريوهات واقعية. تعلم بسرعتك الخاصة مع صعوبة تكيفية مدعومة بالذكاء الاصطناعي.",
@@ -299,7 +301,7 @@ const translations = {
     learnMore: "اعرف المزيد",
     
     // About
-    aboutApp: "حول بطاقي",
+    aboutApp: "حول Botaqiy",
     appVision: "رؤيتنا",
     howItWorks: "كيف يعمل",
     contactUs: "اتصل بنا",

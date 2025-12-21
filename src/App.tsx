@@ -31,10 +31,10 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/" element={<Layout />}>
               <Route index element={<Index />} />
-              <Route path="text-input" element={<TextInput />} />
-              <Route path="flashcard-review/:sessionId" element={<FlashcardReview />} />
-              <Route path="scenario-mode/:sessionId" element={<ScenarioMode />} />
-              <Route path="scenario-test/:scenarioId" element={<ScenarioTest />} />
+            <Route path="text-input" element={<TextInput />} />
+            <Route path="flashcard-review/:sessionId" element={<FlashcardReview />} />
+            <Route path="scenario-mode" element={<ScenarioMode />} />
+            <Route path="scenario-test/:scenarioId" element={<ScenarioTest />} />
               <Route path="rewards" element={<Rewards />} />
               <Route path="profile" element={<Profile />} />
               <Route path="about" element={<About />} />

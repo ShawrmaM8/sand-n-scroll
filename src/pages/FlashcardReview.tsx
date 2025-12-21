@@ -34,7 +34,17 @@ export default function FlashcardReview() {
         .from('flashcard_sessions')
         .select('flashcards')
         .eq('id', sessionId)
-        .single();
+        .maybeSingle();
+
+      if (!data) {
+        toast({
+          title: t("error"),
+          description: "Session not found",
+          variant: "destructive",
+        });
+        navigate("/text-input");
+        return;
+      }
 
       if (error) throw error;
       setFlashcards(Array.isArray(data.flashcards) ? data.flashcards as unknown as Flashcard[] : []);
@@ -76,7 +86,7 @@ export default function FlashcardReview() {
       <div className="max-w-2xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">{t("reviewFlashcards")}</h1>
-          <Button variant="outline" onClick={() => navigate("/scenario-mode/" + sessionId)}>
+          <Button variant="outline" onClick={() => navigate("/scenario-mode")}>
             {t("goToScenarios")}
           </Button>
         </div>
