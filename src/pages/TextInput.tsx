@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +7,7 @@ import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { FileText, Upload } from "lucide-react";
+import { FileText, Upload, Home, BookOpen, Gift, User, Info } from "lucide-react";
 
 export default function TextInput() {
   const [text, setText] = useState("");
@@ -73,6 +73,40 @@ export default function TextInput() {
 
   return (
     <div className="container mx-auto py-8 px-4" dir={language === "ar" ? "rtl" : "ltr"}>
+      {/* Navigation */}
+      <div className="flex gap-2 mb-6 flex-wrap">
+        <Link to="/">
+          <Button variant="outline" size="sm" className="gap-2">
+            <Home className="h-4 w-4" />
+            {t("home")}
+          </Button>
+        </Link>
+        <Link to="/scenario-mode">
+          <Button variant="outline" size="sm" className="gap-2">
+            <BookOpen className="h-4 w-4" />
+            {t("scenarioMode")}
+          </Button>
+        </Link>
+        <Link to="/rewards">
+          <Button variant="outline" size="sm" className="gap-2">
+            <Gift className="h-4 w-4" />
+            {t("rewards")}
+          </Button>
+        </Link>
+        <Link to="/profile">
+          <Button variant="outline" size="sm" className="gap-2">
+            <User className="h-4 w-4" />
+            {t("profile")}
+          </Button>
+        </Link>
+        <Link to="/about">
+          <Button variant="outline" size="sm" className="gap-2">
+            <Info className="h-4 w-4" />
+            {t("about")}
+          </Button>
+        </Link>
+      </div>
+
       <Card className="max-w-3xl mx-auto">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
