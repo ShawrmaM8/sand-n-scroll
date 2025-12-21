@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { Menu, Home, Gift, User, Coins, Flame, Globe, Info } from "lucide-react";
+import { Menu, Home, Gift, User, Coins, Flame, Globe, Info, FileText, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { NavLink } from "react-router-dom";
@@ -14,6 +14,8 @@ export default function Layout() {
 
   const navItems = [
     { title: t('home'), url: "/", icon: Home },
+    { title: t('textInput'), url: "/text-input", icon: FileText },
+    { title: t('scenarioMode'), url: "/scenario-mode", icon: BookOpen },
     { title: t('rewards'), url: "/rewards", icon: Gift },
     { title: t('profile'), url: "/profile", icon: User },
     { title: t('about'), url: "/about", icon: Info },
@@ -30,7 +32,7 @@ export default function Layout() {
               <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-lg">ب</span>
               </div>
-              <h1 className="text-xl font-bold text-foreground">{t('appName')}</h1>
+              <h1 className="text-xl font-bold text-foreground">Botaqiy</h1>
             </NavLink>
 
             {/* Desktop Navigation */}
@@ -82,11 +84,11 @@ export default function Layout() {
                 </SheetTrigger>
                 <SheetContent side={language === 'ar' ? 'left' : 'right'} className="w-80">
                   <SheetHeader>
-                    <SheetTitle className="flex items-center gap-3">
+                  <SheetTitle className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                         <span className="text-primary-foreground font-bold">ب</span>
                       </div>
-                      <span>{t('appName')}</span>
+                      <span>Botaqiy</span>
                     </SheetTitle>
                   </SheetHeader>
                   

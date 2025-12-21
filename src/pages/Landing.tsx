@@ -36,7 +36,7 @@ const translations = {
       rewards: "Gamified Rewards",
     },
     features: {
-      title: "Why Choose Botaqiq?",
+      title: "Why Choose Botaqiy?",
       subtitle: "Experience a revolutionary approach to learning Arabic",
       intelligentSRS: {
         title: "AI-Powered Flashcards",
@@ -73,7 +73,7 @@ const translations = {
     },
     cta: {
       title: "Ready to Master Arabic?",
-      subtitle: "Join Botaqiq today and experience the most engaging way to learn Arabic through intelligent flashcards and AI-powered scenarios.",
+      subtitle: "Join Botaqiy today and experience the most engaging way to learn Arabic through intelligent flashcards and AI-powered scenarios.",
       getStarted: "Get Started Free",
       exploreMore: "Learn More",
     },
@@ -99,7 +99,7 @@ const translations = {
       rewards: "مكافآت مُلعَّبة",
     },
     features: {
-      title: "لماذا تختار بطاقي؟",
+      title: "لماذا تختار Botaqiy؟",
       subtitle: "اختبر نهجاً ثورياً لتعلم اللغة العربية",
       intelligentSRS: {
         title: "بطاقات تعليمية مدعومة بالذكاء الاصطناعي",
@@ -136,7 +136,7 @@ const translations = {
     },
     cta: {
       title: "مستعد لإتقان اللغة العربية؟",
-      subtitle: "انضم إلى بطاقي اليوم واختبر أكثر الطرق إثارة لتعلم اللغة العربية من خلال البطاقات التعليمية الذكية والسيناريوهات المدعومة بالذكاء الاصطناعي.",
+      subtitle: "انضم إلى Botaqiy اليوم واختبر أكثر الطرق إثارة لتعلم اللغة العربية من خلال البطاقات التعليمية الذكية والسيناريوهات المدعومة بالذكاء الاصطناعي.",
       getStarted: "ابدأ مجاناً",
       exploreMore: "اعرف المزيد",
     },
@@ -176,12 +176,12 @@ const Landing = () => {
         <div className="relative max-w-6xl mx-auto text-center space-y-8 animate-fade-in">
           {/* Logo/Brand */}
           <div className="space-y-4">
-            <img src={dallahLogo} alt="Botaqiq Logo" className="w-24 h-24 mx-auto animate-fade-in" />
+            <img src={dallahLogo} alt="Botaqiy Logo" className="w-24 h-24 mx-auto animate-fade-in" />
             <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              Botaqiq
+              Botaqiy
             </h1>
-            <p className="text-3xl md:text-4xl font-semibold text-muted-foreground" dir="rtl">
-              بطاقي
+            <p className="text-xl md:text-2xl font-semibold text-muted-foreground">
+              Arabic Learning Made Intelligent
             </p>
           </div>
 
@@ -443,9 +443,8 @@ const Landing = () => {
       <footer className="py-12 px-4 bg-card/50 border-t">
         <div className="max-w-6xl mx-auto text-center space-y-4">
           <div className="flex justify-center items-center gap-2">
-            <img src={dallahLogo} alt="Botaqiq Logo" className="w-8 h-8" />
-            <h3 className="text-2xl font-bold text-foreground">Botaqiq</h3>
-            <span className="text-xl text-muted-foreground" dir="rtl">بطاقي</span>
+            <img src={dallahLogo} alt="Botaqiy Logo" className="w-8 h-8" />
+            <h3 className="text-2xl font-bold text-foreground">Botaqiy</h3>
           </div>
           <p className="text-sm text-muted-foreground">
             {t.footer.subtitle}

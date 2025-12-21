@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Target, Zap, Award, ArrowRight } from "lucide-react";
-import { ruleBasedScenarios, getScenariosByDifficulty } from "@/data/scenarios";
+import { getScenariosByDifficulty } from "@/data/scenarios";
 
 export default function ScenarioMode() {
-  const { sessionId } = useParams();
   const navigate = useNavigate();
   const { t, language } = useLanguage();
   const [selectedDifficulty, setSelectedDifficulty] = useState<'easy' | 'medium' | 'hard' | null>(null);
