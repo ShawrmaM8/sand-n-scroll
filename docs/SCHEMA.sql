@@ -126,7 +126,29 @@ CREATE POLICY "Users can insert own scores" ON public.user_scores
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 -- =============================================
--- 6. REWARDS TABLE (Reference Data)
+-- 6. COIN TRANSACTIONS TABLE
+-- Tracks all coin earning/spending actions
+-- =============================================
+CREATE TABLE IF NOT EXISTS public.coin_transactions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  amount INTEGER NOT NULL, -- Positive for earning, negative for spending
+  action_type TEXT NOT NULL CHECK (action_type IN ('flashcard_easy', 'flashcard_good', 'flashcard_difficult', 'scenario_complete', 'reward_purchase', 'bonus')),
+  reference_id TEXT, -- Optional: session_id, scenario_id, or reward_id
+  description TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE public.coin_transactions ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view own transactions" ON public.coin_transactions
+  FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own transactions" ON public.coin_transactions
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+-- =============================================
+-- 7. REWARDS TABLE (Reference Data)
 -- Defines available rewards in the shop
 -- =============================================
 CREATE TABLE IF NOT EXISTS public.rewards (
@@ -150,7 +172,7 @@ INSERT INTO public.rewards (id, name, name_ar, description, description_ar, cost
 ON CONFLICT (id) DO NOTHING;
 
 -- =============================================
--- 7. USER REWARDS TABLE
+-- 8. USER REWARDS TABLE
 -- Tracks rewards purchased by users
 -- =============================================
 CREATE TABLE IF NOT EXISTS public.user_rewards (
@@ -172,7 +194,7 @@ CREATE POLICY "Users can insert own rewards" ON public.user_rewards
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 -- =============================================
--- 8. SYNC QUEUE TABLE (Offline Support)
+-- 9. SYNC QUEUE TABLE (Offline Support)
 -- Stores pending sync operations
 -- =============================================
 CREATE TABLE IF NOT EXISTS public.sync_queue (
@@ -252,5 +274,6 @@ CREATE INDEX IF NOT EXISTS idx_flashcard_sessions_user_id ON public.flashcard_se
 CREATE INDEX IF NOT EXISTS idx_scenarios_user_id ON public.scenarios(user_id);
 CREATE INDEX IF NOT EXISTS idx_scenarios_session_id ON public.scenarios(session_id);
 CREATE INDEX IF NOT EXISTS idx_user_scores_user_id ON public.user_scores(user_id);
+CREATE INDEX IF NOT EXISTS idx_coin_transactions_user_id ON public.coin_transactions(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_rewards_user_id ON public.user_rewards(user_id);
 CREATE INDEX IF NOT EXISTS idx_sync_queue_user_synced ON public.sync_queue(user_id, synced);

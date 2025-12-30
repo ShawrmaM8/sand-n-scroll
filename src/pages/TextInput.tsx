@@ -7,7 +7,29 @@ import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { FileText, Upload, Home, BookOpen, Gift, User, Info } from "lucide-react";
+import { FileText, Upload, Home, BookOpen, Gift, User, Info, Sparkles } from "lucide-react";
+
+// Demo Arabic words list - common vocabulary
+const DEMO_ARABIC_WORDS = `• كتاب (book)
+• قلم (pen)
+• مدرسة (school)
+• بيت (house)
+• ماء (water)
+• شمس (sun)
+• قمر (moon)
+• سماء (sky)
+• أرض (earth)
+• شجرة (tree)
+• زهرة (flower)
+• طائر (bird)
+• سمكة (fish)
+• قطة (cat)
+• كلب (dog)
+• طعام (food)
+• خبز (bread)
+• حليب (milk)
+• فاكهة (fruit)
+• خضروات (vegetables)`;
 
 export default function TextInput() {
   const [text, setText] = useState("");
@@ -16,6 +38,11 @@ export default function TextInput() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t, language } = useLanguage();
+
+  const loadDemoText = () => {
+    setText(DEMO_ARABIC_WORDS);
+    toast({ title: t("demoLoaded"), description: t("demoLoadedDesc") });
+  };
 
   const handleGenerate = async () => {
     if (!text.trim()) {
@@ -117,7 +144,18 @@ export default function TextInput() {
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <label className="text-sm font-medium mb-2 block">{t("pasteText")}</label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-sm font-medium">{t("pasteText")}</label>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={loadDemoText}
+                className="gap-2"
+              >
+                <Sparkles className="h-4 w-4" />
+                {t("loadDemo")}
+              </Button>
+            </div>
             <Textarea
               value={text}
               onChange={(e) => setText(e.target.value)}

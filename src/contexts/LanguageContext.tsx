@@ -38,6 +38,9 @@ const translations = {
     generating: "Generating...",
     enterText: "Please enter some text",
     flashcardsGenerated: "Flashcards generated successfully!",
+    loadDemo: "Load Demo",
+    demoLoaded: "Demo Loaded",
+    demoLoadedDesc: "Arabic words list has been loaded. You can edit or generate flashcards now.",
     
     // Flashcard Review
     reviewFlashcards: "Review Flashcards",
@@ -193,6 +196,9 @@ const translations = {
     generating: "جارٍ الإنشاء...",
     enterText: "يرجى إدخال نص",
     flashcardsGenerated: "تم إنشاء البطاقات بنجاح!",
+    loadDemo: "تحميل العرض",
+    demoLoaded: "تم التحميل",
+    demoLoadedDesc: "تم تحميل قائمة الكلمات العربية. يمكنك تعديلها أو إنشاء البطاقات الآن.",
     
     // Flashcard Review
     reviewFlashcards: "مراجعة البطاقات",
