@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Edit, Upload } from "lucide-react";
+import { Edit, Upload, Loader2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface EditProfileDialogProps {
   profile: {
@@ -24,15 +25,56 @@ export default function EditProfileDialog({ profile, onSave }: EditProfileDialog
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState(profile);
+  const [saving, setSaving] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
-    setOpen(false);
-    toast({
-      title: language === 'ar' ? 'تم التحديث!' : 'Profile Updated!',
-      description: language === 'ar' ? 'تم حفظ تغييراتك بنجاح.' : 'Your changes have been saved successfully.',
-    });
+    setSaving(true);
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast({
+          title: language === 'ar' ? 'خطأ' : 'Error',
+          description: language === 'ar' ? 'يجب تسجيل الدخول' : 'You must be logged in',
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Update profile in database
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          username: formData.username,
+          description: formData.description,
+          country: formData.country,
+        })
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      // Update local state
+      onSave({
+        ...formData,
+        avatar: formData.username.charAt(0).toUpperCase()
+      });
+      
+      setOpen(false);
+      toast({
+        title: language === 'ar' ? 'تم التحديث!' : 'Profile Updated!',
+        description: language === 'ar' ? 'تم حفظ تغييراتك بنجاح.' : 'Your changes have been saved successfully.',
+      });
+    } catch (error: any) {
+      console.error('Error updating profile:', error);
+      toast({
+        title: language === 'ar' ? 'خطأ' : 'Error',
+        description: error.message || (language === 'ar' ? 'فشل في حفظ التغييرات' : 'Failed to save changes'),
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -102,11 +144,18 @@ export default function EditProfileDialog({ profile, onSave }: EditProfileDialog
           </div>
 
           <div className="flex gap-3 pt-4">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)} className="flex-1">
+            <Button type="button" variant="outline" onClick={() => setOpen(false)} className="flex-1" disabled={saving}>
               {language === 'ar' ? 'إلغاء' : 'Cancel'}
             </Button>
-            <Button type="submit" className="luxury-button flex-1">
-              {language === 'ar' ? 'حفظ' : 'Save'}
+            <Button type="submit" className="luxury-button flex-1" disabled={saving}>
+              {saving ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  {language === 'ar' ? 'جارٍ الحفظ...' : 'Saving...'}
+                </>
+              ) : (
+                language === 'ar' ? 'حفظ' : 'Save'
+              )}
             </Button>
           </div>
         </form>

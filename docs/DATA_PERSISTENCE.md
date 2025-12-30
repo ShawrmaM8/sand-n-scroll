@@ -1,10 +1,10 @@
 # Data Persistence Guide for Botaqiy
 
-This guide explains how user data is persisted in the Botaqiy application using Supabase (Lovable Cloud).
+This guide explains how user data is persisted in the Botaqiy application using Lovable Cloud.
 
 ## Architecture Overview
 
-Botaqiy uses Supabase for backend data persistence with Row Level Security (RLS) ensuring each user can only access their own data.
+Botaqiy uses Lovable Cloud for backend data persistence with Row Level Security (RLS) ensuring each user can only access their own data.
 
 ## Database Tables
 
@@ -42,19 +42,72 @@ Tracks scenario test scores.
 - **Fields**: `scenario_id` (TEXT), `difficulty`, `score`, `correct_answers`, `total_questions`
 - **RLS**: Users can only view/insert their own scores
 
+## Coin System
+
+Coins are the primary currency in Botaqiy. Here's how they work:
+
+### Earning Coins
+
+| Action | Coins |
+|--------|-------|
+| Flashcard - Easy rating | +5 |
+| Flashcard - Good rating | +1 |
+| Scenario completion | Points based on accuracy × difficulty |
+
+### Losing Coins
+
+| Action | Coins |
+|--------|-------|
+| Flashcard - Difficult rating | -10 |
+| Reward purchases | Variable cost |
+
+### Implementation Details
+
+**FlashcardReview.tsx** - Difficulty rating buttons:
+```typescript
+const handleDifficultyRating = async (rating: 'easy' | 'good' | 'difficult') => {
+  switch (rating) {
+    case 'easy': await addCoins(5); break;
+    case 'good': await addCoins(1); break;
+    case 'difficult': await deductCoins(10); break;
+  }
+};
+```
+
+**useUserProgress hook** - Manages coin updates:
+- `addCoins(amount)` - Adds coins and syncs to database
+- `deductCoins(amount)` - Removes coins (fails if insufficient balance)
+- `refresh()` - Reloads progress from database
+
+## Profile Persistence
+
+Profile data is saved to the `profiles` table when users edit their profile:
+
+**EditProfileDialog.tsx**:
+```typescript
+const { error } = await supabase
+  .from('profiles')
+  .update({
+    username: formData.username,
+    description: formData.description,
+    country: formData.country,
+  })
+  .eq('id', user.id);
+```
+
 ## Authentication Flow
 
 1. User signs up/logs in via `/auth` page
-2. Supabase Auth creates a record in `auth.users`
+2. Auth creates a record in `auth.users`
 3. A database trigger `handle_new_user()` automatically creates:
    - A record in `profiles` with default username
    - A record in `user_progress` with default values (0 coins, level 1, 0 streak)
 
-## How Data Persists
+## Database Trigger
 
-### On User Registration
+The `handle_new_user` function runs on every new user registration:
+
 ```sql
--- Trigger function (already set up)
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger AS $$
 BEGIN
@@ -69,24 +122,13 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 ```
 
-### Coin Transactions
-Coins are updated via:
-1. **Scenario completion**: `ScenarioTest.tsx` calls `addCoins()` after test
-2. **Reward purchases**: `purchase-reward` edge function deducts coins
-
-### Streak Calculation
-The `useUserProgress` hook manages streak:
-- Checks `last_activity_date` against current date
-- Increments streak if consecutive days
-- Resets to 1 if a day is missed
-
 ## Edge Functions
 
 ### `purchase-reward`
 - Validates user authentication
 - Checks sufficient coin balance
 - Deducts coins atomically
-- Records purchase in `user_rewards` table
+- Records purchase (optional)
 
 ### `generate-flashcards`
 - Accepts text input
@@ -101,44 +143,41 @@ The `useUserProgress` hook manages streak:
 
 1. **Ensure Lovable Cloud is enabled** in project settings
 
-2. **Run migrations** (handled automatically by Lovable):
-   - Tables are created via Supabase migrations
-   - RLS policies are applied automatically
+2. **Tables and RLS policies** are managed automatically via migrations
 
 3. **Configure Auth**:
-   - Email auto-confirm should be enabled
-   - Social providers can be added in Supabase dashboard
+   - Email auto-confirm should be enabled for development
 
-## Security Best Practices
+## Complete Schema Reference
 
-1. **Never expose `service_role` key** in client code
-2. **All client queries** use `anon` key with RLS
-3. **Edge functions** use `service_role` for privileged operations
-4. **User data isolation** is enforced by `auth.uid() = user_id` policies
+See `docs/SCHEMA.sql` for the complete database schema including:
+- All table definitions
+- Foreign key relationships
+- RLS policies
+- Triggers and functions
+- Indexes for performance
 
 ## Offline Support
 
 The app includes offline support via IndexedDB (`src/lib/offline/db.ts`):
-- Syncs progress when back online
 - Caches user data locally
+- Syncs when back online
 - Queue operations for later sync
 
 ## Troubleshooting
 
-### User data not persisting
+### Coins not updating
+1. Ensure user is authenticated
+2. Check `user_progress` record exists for user
+3. Verify sufficient balance for deductions
+4. Check browser console for errors
+
+### Profile not saving
+1. Verify user is logged in
+2. Check RLS policy allows update for user's own profile
+3. Check network requests for errors
+
+### Data not persisting
 1. Check if user is authenticated: `supabase.auth.getUser()`
 2. Verify RLS policies allow the operation
 3. Check browser console for Supabase errors
-
-### Coins not updating
-1. Ensure `user_progress` record exists for user
-2. Check `purchase-reward` function logs
-3. Verify coin balance before purchase
-
-### Streak resetting unexpectedly
-1. Check timezone handling in `last_activity_date`
-2. Verify the date comparison logic in `useUserProgress`
-
-## Database Schema Reference
-
-See `docs/SCHEMA.sql` for complete schema with all tables, constraints, and RLS policies.
