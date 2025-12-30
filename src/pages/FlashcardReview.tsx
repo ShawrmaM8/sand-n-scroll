@@ -6,7 +6,8 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
+import { useUserProgress } from "@/hooks/useUserProgress";
+import { ChevronLeft, ChevronRight, RotateCcw, ThumbsUp, ThumbsDown, Smile } from "lucide-react";
 
 interface Flashcard {
   front: string;
@@ -19,6 +20,7 @@ export default function FlashcardReview() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t, language } = useLanguage();
+  const { addCoins, deductCoins, refresh } = useUserProgress();
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
@@ -57,6 +59,66 @@ export default function FlashcardReview() {
       navigate("/");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDifficultyRating = async (rating: 'easy' | 'good' | 'difficult') => {
+    let coinChange = 0;
+    let message = '';
+    
+    switch (rating) {
+      case 'easy':
+        coinChange = 5;
+        message = language === 'ar' ? '+5 عملات!' : '+5 coins!';
+        break;
+      case 'good':
+        coinChange = 1;
+        message = language === 'ar' ? '+1 عملة!' : '+1 coin!';
+        break;
+      case 'difficult':
+        coinChange = -10;
+        message = language === 'ar' ? '-10 عملات' : '-10 coins';
+        break;
+    }
+
+    // Update coins in database
+    if (coinChange > 0) {
+      const success = await addCoins(coinChange);
+      if (success) {
+        toast({
+          title: rating === 'easy' ? '🎉 ' + (language === 'ar' ? 'ممتاز!' : 'Excellent!') : 
+                 rating === 'good' ? '👍 ' + (language === 'ar' ? 'جيد!' : 'Good!') : '',
+          description: message,
+        });
+      }
+    } else if (coinChange < 0) {
+      const success = await deductCoins(Math.abs(coinChange));
+      if (success) {
+        toast({
+          title: language === 'ar' ? 'صعب' : 'Difficult',
+          description: message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: language === 'ar' ? 'رصيد غير كافٍ' : 'Insufficient coins',
+          description: language === 'ar' ? 'لا يوجد عملات كافية للخصم' : 'Not enough coins to deduct',
+          variant: "destructive",
+        });
+      }
+    }
+
+    await refresh();
+
+    // Move to next card
+    if (currentIndex < flashcards.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+      setShowAnswer(false);
+    } else {
+      toast({
+        title: language === 'ar' ? 'انتهت المراجعة!' : 'Review Complete!',
+        description: language === 'ar' ? 'أحسنت! لقد راجعت جميع البطاقات.' : 'Great job! You reviewed all cards.',
+      });
     }
   };
 
@@ -112,6 +174,36 @@ export default function FlashcardReview() {
               <RotateCcw className="w-4 h-4" />
               {showAnswer ? t("showQuestion") : t("showAnswer")}
             </Button>
+
+            {/* Difficulty Rating Buttons - Only show when answer is visible */}
+            {showAnswer && (
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => handleDifficultyRating('difficult')}
+                  variant="outline"
+                  className="gap-2 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                >
+                  <ThumbsDown className="w-4 h-4" />
+                  {language === 'ar' ? 'صعب (-10)' : 'Difficult (-10)'}
+                </Button>
+                <Button
+                  onClick={() => handleDifficultyRating('good')}
+                  variant="outline"
+                  className="gap-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                >
+                  <Smile className="w-4 h-4" />
+                  {language === 'ar' ? 'جيد (+1)' : 'Good (+1)'}
+                </Button>
+                <Button
+                  onClick={() => handleDifficultyRating('easy')}
+                  variant="outline"
+                  className="gap-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+                >
+                  <ThumbsUp className="w-4 h-4" />
+                  {language === 'ar' ? 'سهل (+5)' : 'Easy (+5)'}
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
 

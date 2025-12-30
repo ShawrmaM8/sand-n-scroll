@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/co
 import { NavLink } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useUserProgress } from "@/hooks/useUserProgress";
+import dallahLogo from "@/assets/dallah-logo.png";
 
 export default function Layout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -29,9 +30,7 @@ export default function Layout() {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <NavLink to="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">ب</span>
-              </div>
+              <img src={dallahLogo} alt="Botaqiy" className="w-10 h-10 object-contain" />
               <h1 className="text-xl font-bold text-foreground">Botaqiy</h1>
             </NavLink>
 
@@ -84,10 +83,8 @@ export default function Layout() {
                 </SheetTrigger>
                 <SheetContent side={language === 'ar' ? 'left' : 'right'} className="w-80">
                   <SheetHeader>
-                  <SheetTitle className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                        <span className="text-primary-foreground font-bold">ب</span>
-                      </div>
+                    <SheetTitle className="flex items-center gap-3">
+                      <img src={dallahLogo} alt="Botaqiy" className="w-8 h-8 object-contain" />
                       <span>Botaqiy</span>
                     </SheetTitle>
                   </SheetHeader>
