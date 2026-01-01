@@ -224,7 +224,7 @@ const Landing = () => {
               size="lg"
               variant="outline"
               className="text-lg px-8 py-6 border-2"
-              onClick={() => navigate("/about")}
+              onClick={() => navigate("/app/about")}
             >
               {t.hero.learnMore}
             </Button>
@@ -431,7 +431,7 @@ const Landing = () => {
               size="lg"
               variant="outline"
               className="text-lg px-8 py-6 border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
-              onClick={() => navigate("/about")}
+              onClick={() => navigate("/app/about")}
             >
               {t.cta.exploreMore}
             </Button>
@@ -450,13 +450,13 @@ const Landing = () => {
             {t.footer.subtitle}
           </p>
           <div className="flex justify-center gap-6 text-sm text-muted-foreground">
-            <button onClick={() => navigate("/about")} className="hover:text-foreground transition-colors">
+            <button onClick={() => navigate("/app/about")} className="hover:text-foreground transition-colors">
               {t.footer.about}
             </button>
-            <button onClick={() => navigate("/profile")} className="hover:text-foreground transition-colors">
+            <button onClick={() => navigate("/app/profile")} className="hover:text-foreground transition-colors">
               {t.footer.profile}
             </button>
-            <button onClick={() => navigate("/rewards")} className="hover:text-foreground transition-colors">
+            <button onClick={() => navigate("/app/rewards")} className="hover:text-foreground transition-colors">
               {t.footer.rewards}
             </button>
           </div>

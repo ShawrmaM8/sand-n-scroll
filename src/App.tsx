@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import Layout from "./components/Layout";
 import Landing from "./pages/Landing";
@@ -27,14 +27,17 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            {/* Redirect root to landing page */}
+            <Route path="/" element={<Navigate to="/landing" replace />} />
             <Route path="/landing" element={<Landing />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/" element={<Layout />}>
+            {/* Authenticated app routes */}
+            <Route path="/app" element={<Layout />}>
               <Route index element={<Index />} />
-            <Route path="text-input" element={<TextInput />} />
-            <Route path="flashcard-review/:sessionId" element={<FlashcardReview />} />
-            <Route path="scenario-mode" element={<ScenarioMode />} />
-            <Route path="scenario-test/:scenarioId" element={<ScenarioTest />} />
+              <Route path="text-input" element={<TextInput />} />
+              <Route path="flashcard-review/:sessionId" element={<FlashcardReview />} />
+              <Route path="scenario-mode" element={<ScenarioMode />} />
+              <Route path="scenario-test/:scenarioId" element={<ScenarioTest />} />
               <Route path="rewards" element={<Rewards />} />
               <Route path="profile" element={<Profile />} />
               <Route path="about" element={<About />} />
