@@ -14,12 +14,12 @@ export default function Layout() {
   const { progress } = useUserProgress();
 
   const navItems = [
-    { title: t('home'), url: "/", icon: Home },
-    { title: t('textInput'), url: "/text-input", icon: FileText },
-    { title: t('scenarioMode'), url: "/scenario-mode", icon: BookOpen },
-    { title: t('rewards'), url: "/rewards", icon: Gift },
-    { title: t('profile'), url: "/profile", icon: User },
-    { title: t('about'), url: "/about", icon: Info },
+    { title: t('home'), url: "/app", icon: Home },
+    { title: t('textInput'), url: "/app/text-input", icon: FileText },
+    { title: t('scenarioMode'), url: "/app/scenario-mode", icon: BookOpen },
+    { title: t('rewards'), url: "/app/rewards", icon: Gift },
+    { title: t('profile'), url: "/app/profile", icon: User },
+    { title: t('about'), url: "/app/about", icon: Info },
   ];
 
   return (
@@ -29,7 +29,7 @@ export default function Layout() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <NavLink to="/" className="flex items-center gap-3">
+            <NavLink to="/app" className="flex items-center gap-3">
               <img src={dallahLogo} alt="Botaqiy" className="w-10 h-10 object-contain" />
               <h1 className="text-xl font-bold text-foreground">Botaqiy</h1>
             </NavLink>
