@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      coin_transactions: {
+        Row: {
+          action_type: string
+          amount: number
+          created_at: string
+          id: string
+          reference_id: string | null
+          user_id: string
+        }
+        Insert: {
+          action_type: string
+          amount: number
+          created_at?: string
+          id?: string
+          reference_id?: string | null
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          amount?: number
+          created_at?: string
+          id?: string
+          reference_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       flashcard_sessions: {
         Row: {
           created_at: string | null
@@ -74,6 +101,42 @@ export type Database = {
         }
         Relationships: []
       }
+      rewards: {
+        Row: {
+          cost: number
+          created_at: string
+          description: string | null
+          description_ar: string | null
+          icon: string | null
+          id: string
+          name: string
+          name_ar: string
+          type: string
+        }
+        Insert: {
+          cost: number
+          created_at?: string
+          description?: string | null
+          description_ar?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          name_ar: string
+          type: string
+        }
+        Update: {
+          cost?: number
+          created_at?: string
+          description?: string | null
+          description_ar?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          name_ar?: string
+          type?: string
+        }
+        Relationships: []
+      }
       scenarios: {
         Row: {
           created_at: string | null
@@ -115,6 +178,39 @@ export type Database = {
           },
         ]
       }
+      sync_queue: {
+        Row: {
+          created_at: string
+          data: Json
+          id: string
+          operation: string
+          synced: boolean
+          synced_at: string | null
+          table_name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data: Json
+          id?: string
+          operation: string
+          synced?: boolean
+          synced_at?: string | null
+          table_name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: string
+          operation?: string
+          synced?: boolean
+          synced_at?: string | null
+          table_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_progress: {
         Row: {
           coins: number | null
@@ -147,6 +243,35 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_rewards: {
+        Row: {
+          id: string
+          purchased_at: string
+          reward_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          purchased_at?: string
+          reward_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          purchased_at?: string
+          reward_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_rewards_reward_id_fkey"
+            columns: ["reward_id"]
+            isOneToOne: false
+            referencedRelation: "rewards"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_scores: {
         Row: {

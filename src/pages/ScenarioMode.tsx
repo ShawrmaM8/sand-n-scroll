@@ -34,7 +34,7 @@ export default function ScenarioMode() {
   };
 
   const handleScenarioSelect = (scenarioId: string) => {
-    navigate(`/scenario-test/${scenarioId}`);
+    navigate(`/app/scenario-test/${scenarioId}`);
   };
 
   const filteredScenarios = selectedDifficulty 

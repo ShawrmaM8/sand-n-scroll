@@ -44,7 +44,7 @@ export default function FlashcardReview() {
           description: "Session not found",
           variant: "destructive",
         });
-        navigate("/text-input");
+        navigate("/app/text-input");
         return;
       }
 
@@ -56,7 +56,7 @@ export default function FlashcardReview() {
         description: error.message,
         variant: "destructive",
       });
-      navigate("/");
+      navigate("/app");
     } finally {
       setLoading(false);
     }
@@ -81,9 +81,10 @@ export default function FlashcardReview() {
         break;
     }
 
-    // Update coins in database
+    // Update coins in database with transaction logging
     if (coinChange > 0) {
-      const success = await addCoins(coinChange);
+      const actionType = `flashcard_${rating}`;
+      const success = await addCoins(coinChange, actionType);
       if (success) {
         toast({
           title: rating === 'easy' ? '🎉 ' + (language === 'ar' ? 'ممتاز!' : 'Excellent!') : 
@@ -92,7 +93,8 @@ export default function FlashcardReview() {
         });
       }
     } else if (coinChange < 0) {
-      const success = await deductCoins(Math.abs(coinChange));
+      const actionType = `flashcard_${rating}`;
+      const success = await deductCoins(Math.abs(coinChange), actionType);
       if (success) {
         toast({
           title: language === 'ar' ? 'صعب' : 'Difficult',
@@ -148,7 +150,7 @@ export default function FlashcardReview() {
       <div className="max-w-2xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">{t("reviewFlashcards")}</h1>
-          <Button variant="outline" onClick={() => navigate("/scenario-mode")}>
+          <Button variant="outline" onClick={() => navigate("/app/scenario-mode")}>
             {t("goToScenarios")}
           </Button>
         </div>
