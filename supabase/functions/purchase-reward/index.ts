@@ -71,22 +71,39 @@ serve(async (req) => {
       throw new Error('Failed to update coins');
     }
 
-    // Record the purchase in user_rewards table (if it exists)
-    // This is optional - the table may not exist yet
-    try {
-      await supabase
+    // Log the transaction
+    const { error: transactionError } = await supabase
+      .from('coin_transactions')
+      .insert({
+        user_id: userId,
+        amount: -cost,
+        action_type: 'reward_purchase',
+        reference_id: rewardId
+      });
+
+    if (transactionError) {
+      console.error('Error logging transaction:', transactionError);
+      // Don't fail the purchase if transaction logging fails
+    }
+
+    // Check if reward exists in rewards table, if so record in user_rewards
+    const { data: rewardData } = await supabase
+      .from('rewards')
+      .select('id')
+      .eq('id', rewardId)
+      .maybeSingle();
+
+    if (rewardData) {
+      const { error: userRewardError } = await supabase
         .from('user_rewards')
         .insert({
           user_id: userId,
-          reward_id: rewardId,
-          reward_name: rewardName,
-          reward_type: rewardType,
-          cost_paid: cost,
-          purchased_at: new Date().toISOString()
+          reward_id: rewardData.id
         });
-    } catch (e) {
-      // Table might not exist, that's okay
-      console.log('Could not record purchase in user_rewards:', e);
+
+      if (userRewardError) {
+        console.error('Error recording user reward:', userRewardError);
+      }
     }
 
     console.log(`Purchase successful: New balance ${newCoins}`);

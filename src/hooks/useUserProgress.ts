@@ -74,7 +74,22 @@ export function useUserProgress() {
     }
   };
 
-  const updateCoins = async (amount: number): Promise<boolean> => {
+  const logTransaction = async (amount: number, actionType: string, referenceId?: string) => {
+    if (!userId || !isOnline()) return;
+    
+    try {
+      await supabase.from('coin_transactions').insert({
+        user_id: userId,
+        amount,
+        action_type: actionType,
+        reference_id: referenceId
+      });
+    } catch (error) {
+      console.error('Error logging transaction:', error);
+    }
+  };
+
+  const updateCoins = async (amount: number, actionType?: string, referenceId?: string): Promise<boolean> => {
     if (!userId) return false;
 
     const newCoins = progress.coins + amount;
@@ -88,6 +103,11 @@ export function useUserProgress() {
           .eq('user_id', userId);
 
         if (error) throw error;
+        
+        // Log the transaction
+        if (actionType) {
+          await logTransaction(amount, actionType, referenceId);
+        }
       }
 
       const updatedProgress = { ...progress, coins: newCoins };
@@ -101,8 +121,10 @@ export function useUserProgress() {
     }
   };
 
-  const addCoins = (amount: number) => updateCoins(amount);
-  const deductCoins = (amount: number) => updateCoins(-amount);
+  const addCoins = (amount: number, actionType?: string, referenceId?: string) => 
+    updateCoins(amount, actionType, referenceId);
+  const deductCoins = (amount: number, actionType?: string, referenceId?: string) => 
+    updateCoins(-amount, actionType, referenceId);
 
   const refresh = () => loadProgress();
 

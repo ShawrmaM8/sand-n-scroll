@@ -40,7 +40,7 @@ export default function ScenarioTest() {
           description: t("scenarioNotFound"),
           variant: "destructive",
         });
-        navigate("/scenario-mode");
+        navigate("/app/scenario-mode");
       }
     }
   }, [scenarioId]);
@@ -167,7 +167,7 @@ export default function ScenarioTest() {
             </div>
 
             <div className="flex gap-4 justify-center pt-4">
-              <Button onClick={() => navigate("/scenario-mode")} size="lg">
+              <Button onClick={() => navigate("/app/scenario-mode")} size="lg">
                 {t("backToScenarios")}
               </Button>
               <Button variant="outline" onClick={restartTest} size="lg">

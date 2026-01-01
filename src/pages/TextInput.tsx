@@ -86,7 +86,7 @@ export default function TextInput() {
       if (sessionError) throw sessionError;
 
       toast({ title: t("flashcardsGenerated") });
-      navigate(`/flashcard-review/${session.id}`);
+      navigate(`/app/flashcard-review/${session.id}`);
     } catch (error: any) {
       toast({
         title: t("error"),
@@ -102,31 +102,31 @@ export default function TextInput() {
     <div className="container mx-auto py-8 px-4" dir={language === "ar" ? "rtl" : "ltr"}>
       {/* Navigation */}
       <div className="flex gap-2 mb-6 flex-wrap">
-        <Link to="/">
+        <Link to="/app">
           <Button variant="outline" size="sm" className="gap-2">
             <Home className="h-4 w-4" />
             {t("home")}
           </Button>
         </Link>
-        <Link to="/scenario-mode">
+        <Link to="/app/scenario-mode">
           <Button variant="outline" size="sm" className="gap-2">
             <BookOpen className="h-4 w-4" />
             {t("scenarioMode")}
           </Button>
         </Link>
-        <Link to="/rewards">
+        <Link to="/app/rewards">
           <Button variant="outline" size="sm" className="gap-2">
             <Gift className="h-4 w-4" />
             {t("rewards")}
           </Button>
         </Link>
-        <Link to="/profile">
+        <Link to="/app/profile">
           <Button variant="outline" size="sm" className="gap-2">
             <User className="h-4 w-4" />
             {t("profile")}
           </Button>
         </Link>
-        <Link to="/about">
+        <Link to="/app/about">
           <Button variant="outline" size="sm" className="gap-2">
             <Info className="h-4 w-4" />
             {t("about")}
