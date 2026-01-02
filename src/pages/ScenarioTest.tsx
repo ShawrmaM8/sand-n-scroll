@@ -78,9 +78,9 @@ export default function ScenarioTest() {
     
     setEarnedPoints(points);
     
-    // Add coins
+    // Add coins with transaction logging
     if (points > 0) {
-      await addCoins(points);
+      await addCoins(points, 'scenario_completion', scenario.id);
       await refresh();
     }
 
